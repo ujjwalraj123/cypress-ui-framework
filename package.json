@@ -7,10 +7,19 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "cy:run": "cypress run",
+    "clean": "rimraf allure-results allure-report",
+    "UR:run": "node split-runner.js",
+    "UR:singleThread": "npx cypress run || node -e \"process.exit(0)\"",
+    "copy:history": "shx mkdir -p allure-results && shx cp -r allure-report/history allure-results/",
+    "UR:report": "allure generate allure-results --clean && node customiseAllureReports.js",
+    "UR": "npm run  copy:history && npm run  UR:singleThread && npm run  UR:report",
+    "UR:open": "npx allure open"
   },
   "dependencies": {
+    "@shelex/cypress-allure-plugin": "^2.41.2",
     "cypress": "^15.10.0",
-    "cypress-xpath": "^2.0.1"
+    "cypress-xpath": "^2.0.1",
+    "shx": "^0.4.0"
   }
 }
